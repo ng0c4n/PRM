@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Practice</string>
+    <string name="sql_activity">SQLLite</string>
+    <string name="api_activity">APIActivity</string>
+</resources>
