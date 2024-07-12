@@ -1,5 +1,5 @@
-package com.example.practice;
-
+package com.example.pe_prm392_annhnde160591;
+import android.content.IntentFilter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,9 +13,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import android.net.wifi.WifiManager;
+import android.util.Log;
+import Receiver.WifiReceiver;
 
 public class MainActivity extends AppCompatActivity {
-
+    private WifiReceiver wifiReceiver = new WifiReceiver();
+    private static final String TAG = "Receiver";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +35,26 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            // Register the receiver
+            IntentFilter filter1 = new
+                    IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION);
+            registerReceiver(wifiReceiver, filter1);
+            Log.d(TAG, "Wifi - Receiver registered successfully");
+        } catch (Exception e) {
+            Log.e(TAG, "Wifi - Failed to register receiver", e);
+        }
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (wifiReceiver != null) {
+            unregisterReceiver(wifiReceiver);
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
